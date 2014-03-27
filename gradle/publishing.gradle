@@ -11,7 +11,8 @@ publishing {
 
 			pom.withXml {
 				asNode().with {
-					appendNode('description', project.description)
+					appendNode('name', 'gradle-imports')
+					appendNode('description', 'A Gradle plugin for organizing imports in Java and Groovy source files.')
 					appendNode('url', 'http://github.com/ajoberstar/gradle-imports')
 					appendNode('licenses').with {
 						appendNode('license').with {
