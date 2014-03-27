@@ -25,10 +25,10 @@ import org.gradle.api.tasks.util.PatternSet
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-import groovy.transform.TupleConstructor
+import groovy.transform.Immutable
 
 class OrganizeImports extends DefaultTask implements PatternFilterable {
-	private static final Pattern IMPORT_PATTERN = ~/^import(\s+static)?\s+(\S+\.(\S+?);?)/
+	private static final Pattern IMPORT_PATTERN = ~/^import(\s+static)?\s+(\S+\.([^\s;]+);?)/
 
 	@Delegate private PatternFilterable patterns = new PatternSet()
 	Set<SourceSet> sourceSets = []
@@ -42,7 +42,7 @@ class OrganizeImports extends DefaultTask implements PatternFilterable {
 
 	@TaskAction
 	void organize() {
-		FileCollection allFiles = sourceSets.inject(getProject().files()) { sourceSet, allSource ->
+		FileCollection allFiles = sourceSets.inject(getProject().files()) { allSource, sourceSet ->
 			allSource + sourceSet.allSource
 		}
 		List sortPatterns = sortOrder.collect { Pattern.compile(it) }
@@ -51,7 +51,7 @@ class OrganizeImports extends DefaultTask implements PatternFilterable {
 		}
 	}
 
-	private organizeFile(File file, List sortPatterns) {
+	protected organizeFile(File file, List sortPatterns) {
 		int importStart = -1
 		int importEnd = -1
 
@@ -65,7 +65,7 @@ class OrganizeImports extends DefaultTask implements PatternFilterable {
 					if (importStart < 0) {
 						importStart = index
 					}
-					imports << new Import(m[0][2], m[0][3], m[0][1])
+					imports << new Import(qualifiedName: m[0][2], simpleName: m[0][3], staticImport: m[0][1])
 				} else {
 					throw new GradleException("Found unexpected import (${line}) on line ${index + 1} of ${file}")
 				}
@@ -75,14 +75,14 @@ class OrganizeImports extends DefaultTask implements PatternFilterable {
 		}
 
 		if (importStart >= 0 && importEnd >= importEnd) {
-			List preImportLines = lines[0..importStart]
+			List preImportLines = lines[0..(importStart - 1)]
 			List postImportLines = lines[importEnd..-1]
 
 			def groupedImports = imports.findAll { item ->
 				if (item.starImport || !removeUnused) {
 					return true
 				} else {
-					Pattern usePattern = ~/(?:^|[\[\{\(\s,])${item.simpleName}(?:[\.,\s\)\}\]]|$)/
+					Pattern usePattern = ~/(?:^|[\[\{\(<\s,@])${item.simpleName}(?:[\.\(,\s<>\)\}\]]|$)/
 					return postImportLines.find { line ->
 						usePattern.matcher(line).find()
 					}
@@ -93,15 +93,15 @@ class OrganizeImports extends DefaultTask implements PatternFilterable {
 					if (m.find()) {
 						[staticImport: item.staticImport, pattern: pattern, grouping: m[0][1]]
 					} else {
-						false
+						null
 					}
 				}
 			}.sort { left, right ->
 				def patternIndex = { pattern -> sortPatterns.indexOf(pattern) }
-				def staticCompare = left.staticImport <=> right.staticImport
+				def staticCompare = left.key.staticImport <=> right.key.staticImport
 				if (staticCompare == 0) {
-					def result = patternIndex(left.key.pattern) <=> patternIndex
-					if (result == 0) { result = left.key.grouping <=> left.key.grouping }
+					def result = patternIndex(left.key.pattern) <=> patternIndex(right.key.pattern)
+					if (result == 0) { result = left.key.grouping <=> right.key.grouping }
 					return result
 				} else {
 					return staticImportsFirst ? staticCompare * -1 : staticCompare
@@ -113,7 +113,9 @@ class OrganizeImports extends DefaultTask implements PatternFilterable {
 					writer.println it
 				}
 				groupedImports.each { key, importChunk ->
-					importChunk.each { item ->
+					importChunk.sort { item ->
+						item.qualifiedName
+					}.each { item ->
 						StringBuilder builder = new StringBuilder()
 						builder << 'import '
 						if (item.staticImport) {
@@ -133,11 +135,11 @@ class OrganizeImports extends DefaultTask implements PatternFilterable {
 		}
 	}
 
-	@TupleConstructor
-	private class Import {
-		final String qualifiedName
-		final String simpleName
-		final boolean staticImport
+	@Immutable
+	protected static class Import {
+		String qualifiedName
+		String simpleName
+		boolean staticImport
 
 		boolean isStarImport() {
 			return simpleName == '*'
