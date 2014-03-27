@@ -91,6 +91,9 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.Repository
 ```
 
+The approach to determining unused imports is to search for uses of the class's simple name after the import
+declarations in the file. As mentioned above, this isn't meant to be a robust parser, so ensure you have your files
+versioned before running it.
 
 See the [Groovydoc](http://ajoberstar.org/gradle-imports/docs/groovydoc/) for more information.
 
