@@ -49,8 +49,6 @@ organizeImports {
 }
 ```
 
-//**
-
 The main one that needs explanation is the sort order. This is based on a list of regular expressions that match
 against the fully qualified class names. It should have one capture group that returns the section of the class name
 that will be sorted on.
