@@ -5,7 +5,7 @@ A Gradle plugin to organize imports in Java and Groovy source files.
 ## Where do I get it?
 
 The package is published on [Bintray](https://bintray.com/ajoberstar/gradle-plugins/org.ajoberstar%3Agradle-imports)
-and will be available on JCenter and Maven Central soon.
+and is available on JCenter and Maven Central.
 
 ```groovy
 buildscript {
@@ -110,4 +110,5 @@ Just run the `organizeImports` task.
 
 **v0.1.0**
 
-- Initial release
+- Initial release.
+- See this [commit](https://github.com/ajoberstar/grgit/commit/24e26d13431cf0e97c6762a281a2c7c84cafea23) for an example of the changes it makes.
