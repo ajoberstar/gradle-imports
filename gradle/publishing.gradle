@@ -52,6 +52,7 @@ if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
 			desc = 'A Gradle plugin for organizing imports in Java and Groovy source files.'
 			licenses = ['Apache-2.0']
 			labels = ['groovy', 'java', 'gradle']
+			signFiles = true
 		}
 	}
 }
