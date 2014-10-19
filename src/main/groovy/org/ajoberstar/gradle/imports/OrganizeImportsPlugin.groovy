@@ -22,6 +22,8 @@ class OrganizeImportsPlugin implements Plugin<Project> {
 	void apply(Project project) {
 		OrganizeImports task = project.tasks.create('organizeImports', OrganizeImports)
 		task.description = "Organize import statements in all source sets."
-		task.sourceSets = project.sourceSets
+		project.plugins.withId('java') {
+			task.sourceSets = project.sourceSets
+		}
 	}
 }
