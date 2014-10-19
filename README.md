@@ -4,36 +4,28 @@ A Gradle plugin to organize imports in Java and Groovy source files.
 
 ## Where do I get it?
 
-The package is published on [Bintray](https://bintray.com/ajoberstar/gradle-plugins/org.ajoberstar%3Agradle-imports)
-and is available on JCenter and Maven Central.
-
-```groovy
-buildscript {
-	repositories {
-		jcenter()
-		// mavenCentral()
-	}
-
-	dependencies {
-		classpath 'org.ajoberstar:gradle-imports:<version>'
-	}
-}
-
-apply plugin: 'organize-imports'
-```
+See the [Gradle plugin portal]([http://plugins.gradle.org/plugin/org.ajoberstar.organize-imports]) for instructions on applying the latest version of the plugin.
 
 ## What does it do?
 
 The plugin adds a single task called `organizeImports`. By default, the task is configured
 to process all `.java` and `.groovy` files in all source sets.
 
-It will cover two main tasks.
+It has two main behaviors:
 
 - Sort imports into sections.
 - Remove unused imports.
 
-NOTE: This is a quick and dirty plugin. I was able to test it on one of my larger projects and didn't have any issues.
-That doesn't mean I thought of all of the edge cases. Please use this with care.
+## How do I use it?
+
+**NOTE:** You should *only* run this on **versioned** code. This will ensure that you can revert if you either don't
+like the behavior or find a bug.
+
+Just run the `organizeImports` task.
+
+```
+./gradlew organizeImports
+```
 
 ## How can I configure it?
 
@@ -52,6 +44,8 @@ organizeImports {
 The main one that needs explanation is the sort order. This is based on a list of regular expressions that match
 against the fully qualified class names. It should have one capture group that returns the section of the class name
 that will be sorted on.
+
+## How does it work?
 
 The sorting is done in 4 steps:
 1. Static import or not.
@@ -95,20 +89,14 @@ versioned before running it.
 
 See the [Groovydoc](http://ajoberstar.org/gradle-imports/docs/groovydoc/) for more information.
 
-## How do I use it?
-
-**NOTE:** You should *only* run this on **versioned** code. This will ensure that you can revert if you either don't
-like the behavior or find a bug.
-
-Just run the `organizeImports` task.
-
-```
-./gradlew organizeImports
-```
-
 ## Release Notes
 
-**v0.1.0**
+### v1.0.0
+
+- Changing plugin ID from `organize-imports` to `org.ajoberstar.organize-imports` to be compatible with plugin portal.
+- Waiting to configure sourceSets on task until the `java` plugin applied to work around ordering issues.
+
+### v0.1.0
 
 - Initial release.
 - See this [commit](https://github.com/ajoberstar/grgit/commit/24e26d13431cf0e97c6762a281a2c7c84cafea23) for an example of the changes it makes.
