@@ -4,7 +4,7 @@ A Gradle plugin to organize imports in Java and Groovy source files.
 
 ## Where do I get it?
 
-See the [Gradle plugin portal]([http://plugins.gradle.org/plugin/org.ajoberstar.organize-imports]) for instructions on applying the latest version of the plugin.
+See the [Gradle plugin portal](http://plugins.gradle.org/plugin/org.ajoberstar.organize-imports) for instructions on applying the latest version of the plugin.
 
 ## What does it do?
 
