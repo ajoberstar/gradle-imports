@@ -91,6 +91,10 @@ See the [Groovydoc](http://ajoberstar.org/gradle-imports/docs/groovydoc/) for mo
 
 ## Release Notes
 
+### v1.0.1
+
+- Support ! in front of class name.
+
 ### v1.0.0
 
 - Changing plugin ID from `organize-imports` to `org.ajoberstar.organize-imports` to be compatible with plugin portal.

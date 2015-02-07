@@ -1,8 +1,8 @@
 plugins {
 	id 'groovy'
 	id 'maven-publish'
-	id 'com.jfrog.bintray' version '0.6'
-	id 'org.ajoberstar.defaults' version '0.4.0'
+	id 'com.jfrog.bintray' version '1.1'
+	id 'org.ajoberstar.defaults' version '0.5.0'
 }
 
 group = 'org.ajoberstar'
@@ -18,7 +18,7 @@ defaults {
 		[id: 'ajoberstar', name: 'Andrew Oberstar', email: 'andrew@ajoberstar.org']
 	]
 
-	copyrightYears = '2014'
+	copyrightYears = '2014-2015'
 }
 
 sourceCompatibility = '1.7'
@@ -40,7 +40,7 @@ dependencies {
 
 	// testing
 	testCompile 'junit:junit:4.11'
-	testCompile('org.spockframework:spock-core:0.7-groovy-1.8') { exclude group: 'org.codehaus.groovy' }
+	testCompile('org.spockframework:spock-core:0.7-groovy-2.0') { exclude group: 'org.codehaus.groovy' }
 }
 
 wrapper {
