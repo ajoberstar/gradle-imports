@@ -1,9 +1,9 @@
-[![Stories in Ready](https://badge.waffle.io/ajoberstar/gradle-imports.png?label=ready&title=Ready)](https://waffle.io/ajoberstar/gradle-imports)
 # gradle-imports
 
 A Gradle plugin to organize imports in Java and Groovy source files.
 
 [ ![Download](https://api.bintray.com/packages/ajoberstar/gradle-plugins/org.ajoberstar%3Agradle-imports/images/download.svg) ](https://bintray.com/ajoberstar/gradle-plugins/org.ajoberstar%3Agradle-imports/_latestVersion)
+[![Stories in Ready](https://badge.waffle.io/ajoberstar/gradle-imports.png?label=ready&title=Ready)](https://waffle.io/ajoberstar/gradle-imports)
 
 ## Where do I get it?
 
