@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/ajoberstar/gradle-imports.png?label=ready&title=Ready)](https://waffle.io/ajoberstar/gradle-imports)
 # gradle-imports
 
 A Gradle plugin to organize imports in Java and Groovy source files.
