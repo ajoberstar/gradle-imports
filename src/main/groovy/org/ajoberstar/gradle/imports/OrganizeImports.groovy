@@ -26,6 +26,7 @@ import org.gradle.api.tasks.util.PatternSet
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import groovy.transform.Immutable
+import groovy.transform.PackageScope
 
 class OrganizeImports extends DefaultTask implements PatternFilterable {
 	private static final Pattern IMPORT_PATTERN = ~/^import(\s+static)?\s+(\S+\.([^\s;]+);?)/
@@ -51,7 +52,7 @@ class OrganizeImports extends DefaultTask implements PatternFilterable {
 		}
 	}
 
-	protected organizeFile(File file, List sortPatterns) {
+	@PackageScope void organizeFile(File file, List sortPatterns) {
 		int importStart = -1
 		int importEnd = -1
 
