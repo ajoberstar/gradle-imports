@@ -33,7 +33,7 @@ class OrganizeImports extends DefaultTask implements PatternFilterable {
 
 	@Delegate private PatternFilterable patterns = new PatternSet()
 	Set<SourceSet> sourceSets = []
-	List<String> sortOrder = [/^(javax?)\./, /^(groovyx?)\./, /^([^\.]+\.[^\.]+)\./]
+	List<String> sortOrder = [/^(java)x?\./, /^(groovy)x?\./, /^([^\.]+\.[^\.]+)\./]
 	boolean staticImportsFirst = true
 	boolean removeUnused = true
 
@@ -89,7 +89,7 @@ class OrganizeImports extends DefaultTask implements PatternFilterable {
 					}
 				}
 			}.groupBy { item ->
-				sortPatterns.findResult { pattern ->
+				def importGroup = sortPatterns.findResult { pattern ->
 					Matcher m = pattern.matcher(item.qualifiedName)
 					if (m.find()) {
 						[staticImport: item.staticImport, pattern: pattern, grouping: m[0][1]]
@@ -97,8 +97,13 @@ class OrganizeImports extends DefaultTask implements PatternFilterable {
 						null
 					}
 				}
+				importGroup ?: [staticImport: item.staticImport, pattern: null, grouping: null]
 			}.sort { left, right ->
-				def patternIndex = { pattern -> sortPatterns.indexOf(pattern) }
+				def patternIndex = { pattern ->
+					def index = sortPatterns.indexOf(pattern)
+					// if didn't match a pattern it should be at the end
+					index < 0 ? Integer.MAX_VALUE : index
+				}
 				def staticCompare = left.key.staticImport <=> right.key.staticImport
 				if (staticCompare == 0) {
 					def result = patternIndex(left.key.pattern) <=> patternIndex(right.key.pattern)

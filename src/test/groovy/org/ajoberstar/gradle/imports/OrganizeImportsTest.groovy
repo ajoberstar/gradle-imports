@@ -10,7 +10,7 @@ import org.junit.rules.TemporaryFolder
 
 class OrganizeImportsTest extends Specification {
   @Rule TemporaryFolder tempDir = new TemporaryFolder()
-  private String inputContents = '''
+  private String inputContents = '''\
 package com.nortal.assignment.model;
 
 import lombok.Data;
@@ -26,7 +26,7 @@ public class Unicorn {
 }
 '''
 
-  private String outputContents = '''
+  private String outputContents = '''\
 package com.nortal.assignment.model;
 
 import java.util.Date;
@@ -35,11 +35,11 @@ import lombok.Data;
 
 @Data
 public class Unicorn {
-  private int id;
-  private String name;
-  private String gender;
-  private Date birthdate;
-  private int grassland_id;
+    private int id;
+    private String name;
+    private String gender;
+    private Date birthdate;
+    private int grassland_id;
 }
 '''
 
@@ -48,10 +48,9 @@ public class Unicorn {
     def sourcePath = tempDir.newFile('Unicorn.java').toPath()
     Files.write(sourcePath, inputContents.bytes)
     def task = ProjectBuilder.builder().build().task('organizeImports', type: OrganizeImports)
-    // def task = new OrganizeImports()
     when:
     task.organizeFile(sourcePath.toFile(), task.sortOrder.collect { Pattern.compile(it) })
     then:
-    Files.readAllBytes(sourcePath) == outputContents
+    new String(Files.readAllBytes(sourcePath)) == outputContents
   }
 }
