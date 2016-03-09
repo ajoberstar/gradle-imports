@@ -66,6 +66,6 @@ public class Unicorn {
     when:
     task.organizeFile(sourcePath.toFile(), task.sortOrder.collect { Pattern.compile(it) })
     then:
-    new String(Files.readAllBytes(sourcePath)) == outputContents
+    new String(Files.readAllBytes(sourcePath)) == outputContents.denormalize()
   }
 }
