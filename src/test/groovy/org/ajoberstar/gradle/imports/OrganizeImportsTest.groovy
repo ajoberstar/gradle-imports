@@ -15,6 +15,8 @@
  */
 package org.ajoberstar.gradle.imports
 
+import org.gradle.api.Project
+
 import java.nio.file.Files
 import java.util.regex.Pattern
 
@@ -24,7 +26,8 @@ import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
 class OrganizeImportsTest extends Specification {
-  @Rule TemporaryFolder tempDir = new TemporaryFolder()
+  @Rule
+  TemporaryFolder tempDir = new TemporaryFolder()
   private String inputContents = '''\
 package com.nortal.assignment.model;
 
@@ -67,5 +70,32 @@ public class Unicorn {
     task.organizeFile(sourcePath.toFile(), task.sortOrder.collect { Pattern.compile(it) })
     then:
     new String(Files.readAllBytes(sourcePath)) == outputContents.denormalize()
+  }
+
+  private String doubleColonInput = '''\
+package com.nortal.assignment.model;
+
+import java.util.List;
+import java.util.Objects;
+
+public class DoubleColon {
+    
+    public static Object firstNonNull(List<Object> objects) {
+      return objects.stream().filter(Objects::nonNull).findFirst().orElse(null);
+    }
+}
+'''
+
+  def 'double colon operator is correctly recognized and import is kept'() {
+    given:
+    def sourcePath = tempDir.newFile('DoubleColon.java').toPath()
+    Files.write(sourcePath, doubleColonInput.bytes)
+    def task = ProjectBuilder.builder().build().task('organizeImports', type: OrganizeImports)
+    task.removeUnused = true
+    when:
+    task.organizeFile(sourcePath.toFile(), task.sortOrder.collect { Pattern.compile(it) })
+    then:
+    String result = new String(Files.readAllBytes(sourcePath))
+    result.contains("import java.util.Objects;")
   }
 }
