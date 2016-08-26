@@ -98,4 +98,29 @@ public class DoubleColon {
     String result = new String(Files.readAllBytes(sourcePath))
     result.contains("import java.util.Objects;")
   }
+  
+  private String arrayInput = '''\
+package com.example.myapplication;
+
+import java.io.File;
+
+public interface FileLister {
+
+    File[] listFiles();
+
+}
+'''
+  
+  def 'array notation is recognized and import is kept'() {
+    given:
+    def sourcePath = tempDir.newFile('FileLister.java').toPath()
+    Files.write(sourcePath, arrayInput.bytes)
+    def task = ProjectBuilder.builder().build().task('organizeImports', type: OrganizeImports)
+    task.removeUnused = true
+    when:
+    task.organizeFile(sourcePath.toFile(), task.sortOrder.collect { Pattern.compile(it) })
+    then:
+    String result = new String(Files.readAllBytes(sourcePath))
+    result.contains("import java.io.File;")
+  }
 }
