@@ -83,7 +83,7 @@ class OrganizeImports extends DefaultTask implements PatternFilterable {
 				if (item.starImport || !removeUnused) {
 					return true
 				} else {
-					Pattern usePattern = ~/(?:^|[\[\{\(<\s,@!])${item.simpleName}(?:[\.\(,\s<>\[\)\}\]]|::|$)/
+					Pattern usePattern = ~/(?:^|[\[\{\(<\s,@!])${item.simpleName}(?:[\.;\(,\s<>\[\)\}\]]|::|$)/
 					return postImportLines.find { line ->
 						usePattern.matcher(line).find()
 					}
