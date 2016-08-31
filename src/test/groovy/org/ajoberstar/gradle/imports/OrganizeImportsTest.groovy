@@ -123,4 +123,29 @@ public interface FileLister {
     String result = new String(Files.readAllBytes(sourcePath))
     result.contains("import java.io.File;")
   }
+
+  private String interfaceExceptionInput = '''\
+package com.example.myapplication;
+
+import java.lang.Exception;
+
+public interface MyInterface {
+
+    void throwsException() throws Exception;
+
+}
+'''
+
+  def 'exceptions thrown by an interface method are recognized and kept'() {
+    given:
+    def sourcePath = tempDir.newFile('MyInterface.java').toPath()
+    Files.write(sourcePath, interfaceExceptionInput.bytes)
+    def task = ProjectBuilder.builder().build().task('organizeImports', type: OrganizeImports)
+    task.removeUnused = true
+    when:
+    task.organizeFile(sourcePath.toFile(), task.sortOrder.collect { Pattern.compile(it) })
+    then:
+    String result = new String(Files.readAllBytes(sourcePath))
+    result.contains("import java.lang.Exception;")
+  }
 }
