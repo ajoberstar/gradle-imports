@@ -51,10 +51,11 @@ that will be sorted on.
 ## How does it work?
 
 The sorting is done in 4 steps:
+
 1. Static import or not.
-1. Index of the `sortOrder` pattern it matched against.
-1. Result of capture group of matched pattern.
-1. Full class name
+2. Index of the `sortOrder` pattern it matched against.
+3. Result of capture group of matched pattern.
+4. Full class name
 
 As an example (using the default `sortOrder`). The following imports:
 
