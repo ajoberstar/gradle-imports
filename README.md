@@ -2,8 +2,9 @@
 
 A Gradle plugin to organize imports in Java and Groovy source files.
 
-[ ![Download](https://api.bintray.com/packages/ajoberstar/gradle-plugins/org.ajoberstar%3Agradle-imports/images/download.svg) ](https://bintray.com/ajoberstar/gradle-plugins/org.ajoberstar%3Agradle-imports/_latestVersion)
-[![Stories in Ready](https://badge.waffle.io/ajoberstar/gradle-imports.png?label=ready&title=Ready)](https://waffle.io/ajoberstar/gradle-imports)
+**NOTE** This plugin is no longer maintained. I recommend using [diffplug/spotless](https://github.com/diffplug/spotless) instead.
+
+[ ![Bintray](https://api.bintray.com/packages/ajoberstar/maven/gradle-imports/images/download.svg) ](https://bintray.com/ajoberstar/maven/gradle-imports/_latestVersion)
 
 ## Where do I get it?
 
